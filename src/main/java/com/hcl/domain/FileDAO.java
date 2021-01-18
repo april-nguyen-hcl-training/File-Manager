@@ -1,11 +1,22 @@
 package com.hcl.domain;
 
+import com.hcl.util.Constants;
+
 import java.io.File;
 import java.util.*;
 
 public class FileDAO implements DAO<File> {
 
-    private static List<File> files = new ArrayList<>();
+    private static List<File> files;
+
+    public FileDAO(){
+        files = new ArrayList<>();
+        for (File file : new File(Constants.directoryPath).listFiles()) {
+            if (file.isFile()) {
+                files.add(file);
+            }
+        }
+    }
 
     @Override
     public List<File> getAll() {
@@ -18,12 +29,10 @@ public class FileDAO implements DAO<File> {
     }
 
     @Override
-    public void add(File file) {
-        files.add(file);
+    public boolean add(File file) {
+        return files.add(file);
     }
 
     @Override
-    public void delete(File file) {
-        files.remove(file);
-    }
+    public boolean delete(File file) { return files.remove(file); }
 }

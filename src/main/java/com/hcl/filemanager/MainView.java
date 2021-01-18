@@ -45,11 +45,9 @@ public class MainView {
 
     private static void show() {
         Print.header("FILES");
-        List<File> files = new ArrayList<>(FileController.getAll());
+        List<File> files = new ArrayList<>(FileManager.getAll());
         Collections.sort(files);
-        for (File file : files) {
-            System.out.println(file.getName());
-        }
+        files.forEach((file) -> {System.out.println(file.getName());});
         options();
     }
 

@@ -1,9 +1,15 @@
 package com.hcl.filemanager;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.hcl.filemanager.FileManager.find;
 
 public class UserView {
 
@@ -45,20 +51,59 @@ public class UserView {
     private static void add() {
         Print.header("ADD FILE");
         System.out.println("Enter file path: ");
-        String source = scan.nextLine();
-        if (validPath(source)) {
-            FileController.add(source);
+        String inputPath = scan.nextLine();
+        if (validPath(inputPath)) {
+            Path sourcePath = Paths.get(inputPath);
+            if (sourcePath.toFile().exists())
+            {
+                File source = sourcePath.toFile();
+                if (FileManager.add(source) != false) {
+                    System.out.println(source.getName() + " was added!");
+                    options();
+                } else {
+                    System.out.println("Error in adding: " + source.getName() + ". Please try again!");
+                }
+            }
+            else {
+                System.out.println("Error: File does not exist, please try again!");
+            }
         } else {
             System.out.println("File path not valid, please try again!");
         }
+        add();
     }
 
     private static void delete() {
+        Print.header("DELETE FILE");
 
+        List<File> files = new ArrayList<>(FileManager.getAll());
+        if (files.isEmpty()) {
+            System.out.println("No files in directory to delete!");
+            options();
+        }
+
+        System.out.println("Enter file name to delete (case sensitive): ");
+        String input = scan.nextLine();
+        if (FileManager.delete(input) != false) {
+            System.out.println(input + " was deleted!");
+            options();
+        } else {
+            System.out.println("Error in deleting: " + input + ". Please try again!");
+            delete();
+        }
     }
 
     private static void search() {
-
+        Print.header("SEARCH FOR FILE");
+        System.out.println("Enter file name to search for (case sensitive): ");
+        String input = scan.nextLine();
+        File file = FileManager.find(input, true);
+        if (file != null) {
+            System.out.println(file.getName() + " was found!");
+        } else {
+            System.out.println(file.getName() + " was NOT found!");
+        }
+        options();
     }
 
     private static boolean validPath(String path) {
@@ -71,5 +116,4 @@ public class UserView {
             return false;
         }
     }
-
 }
