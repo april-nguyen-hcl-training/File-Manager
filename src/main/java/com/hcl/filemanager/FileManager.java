@@ -9,7 +9,11 @@ import java.util.List;
 
 public class FileManager {
 
-    private static FileDAO fileDAO = new FileDAO();
+    private static FileDAO fileDAO;
+
+    public FileManager() {
+        fileDAO = new FileDAO();
+    }
 
     public static List<File> getAll() {
         return fileDAO.getAll();

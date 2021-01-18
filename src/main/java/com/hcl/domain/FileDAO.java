@@ -3,6 +3,9 @@ package com.hcl.domain;
 import com.hcl.util.Constants;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class FileDAO implements DAO<File> {
@@ -11,10 +14,17 @@ public class FileDAO implements DAO<File> {
 
     public FileDAO(){
         files = new ArrayList<>();
-        for (File file : new File(Constants.directoryPath).listFiles()) {
-            if (file.isFile()) {
-                files.add(file);
+        Path path = Paths.get(Constants.filePath);
+        if (path.toFile().exists()) {
+            File directory = path.toFile();
+            for (File file : directory.listFiles()) {
+                if (file.isFile()) {
+                    files.add(file);
+                }
             }
+        } else {
+            path.toFile().mkdirs();
+            System.out.println("Initialized directory!");
         }
     }
 
@@ -34,5 +44,8 @@ public class FileDAO implements DAO<File> {
     }
 
     @Override
-    public boolean delete(File file) { return files.remove(file); }
+    public boolean delete(File file) {
+        file.delete();
+        return files.remove(file);
+    }
 }

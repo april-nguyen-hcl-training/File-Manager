@@ -20,7 +20,7 @@ public class UserView {
         System.out.println(
             "1) Add a file\n" +
             "2) Delete a file\n" +
-            "2) Search for a file\n" +
+            "3) Search for a file\n" +
             "4) Back to main options\n"
         );
         select();
@@ -101,7 +101,7 @@ public class UserView {
         if (file != null) {
             System.out.println(file.getName() + " was found!");
         } else {
-            System.out.println(file.getName() + " was NOT found!");
+            System.out.println(input + " was NOT found!");
         }
         options();
     }

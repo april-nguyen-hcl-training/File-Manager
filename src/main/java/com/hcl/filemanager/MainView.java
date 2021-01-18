@@ -46,8 +46,12 @@ public class MainView {
     private static void show() {
         Print.header("FILES");
         List<File> files = new ArrayList<>(FileManager.getAll());
-        Collections.sort(files);
-        files.forEach((file) -> {System.out.println(file.getName());});
+        if (!files.isEmpty()) {
+            Collections.sort(files);
+            files.forEach((file) -> {System.out.println(file.getName());});
+        } else {
+            System.out.println("No files in directory");
+        }
         options();
     }
 
