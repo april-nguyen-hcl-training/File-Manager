@@ -52,26 +52,35 @@ public class UserView {
         Print.header("ADD FILE");
         System.out.println("Enter file path: ");
         String inputPath = scan.nextLine();
-        if (validPath(inputPath)) {
+        if (goodPath(inputPath)){
             Path sourcePath = Paths.get(inputPath);
-            if (sourcePath.toFile().exists())
-            {
-                File source = sourcePath.toFile();
-                if (FileManager.add(source) != false) {
-                    System.out.println(source.getName() + " was added!");
-                    options();
-                } else {
-                    System.out.println("Error in adding: " + source.getName() + ". Please try again!");
-                }
+            File source = sourcePath.toFile();
+            if (FileManager.add(source) != false) {
+                System.out.println(source.getName() + " was added!");
+                options();
+            } else {
+                System.out.println("Error in adding: " + source.getName() + ". Please try again!");
             }
-            else {
-                System.out.println("Error: File does not exist, please try again!");
-            }
-        } else {
-            System.out.println("File path not valid, please try again!");
         }
         add();
     }
+
+    public static boolean goodPath(String inputPath) {
+        if (validPath(inputPath)) {
+            if (Paths.get(inputPath).toFile().exists())
+            {
+                return true;
+            }
+            else {
+                System.out.println("Error: File does not exist, please try again!");
+                return false;
+            }
+        } else {
+            System.out.println("File path not valid, please try again!");
+            return false;
+        }
+    }
+
 
     private static void delete() {
         Print.header("DELETE FILE");
